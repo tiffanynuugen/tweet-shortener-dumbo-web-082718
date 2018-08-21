@@ -1,29 +1,37 @@
-def shorten_tweet(tweet, replacements)
-  if tweet.length <= 140
-    return tweet
-  end
+def word_substituter(string)
+  string.split.collect do |word|
+    if dictionary.keys.include?(word.downcase)
+      word = dictionary[word.downcase]
+    else
+      word
+    end
+  end.join(" ")
+end
+word_substituter(tweet_one)
 
-  new_tweet = []
-  tweet.split().each do |word|
-    new_tweet << (replacements[word.downcase] ? replacements[word.downcase] : word)
+def bulk_tweet_shortener(array)
+  array.each do |tweet|
+    puts word_substituter(tweet)
   end
-
-  new_tweet.join(' ')[0, 140]
 end
 
-def shorten_tweet2(tweet, replacements)
-  if tweet.length <= 140
-    return tweet
-  end
+bulk_tweet_shortener(tweets)
 
-  replacements.keys.each do |key|
-    mod_key = key.downcase.center(key.length + 2)
-    tweet.gsub! mod_key, ' ' + replacements[key] + ' '
+def selective_tweet_shortener(tweet)
+  if tweet.length > 140
+    word_substituter(tweet)
+  else
+    tweet
   end
-  tweet[0, 140]
+end
+selective_tweet_shortener(tweet_three)
+
+def shortened_tweet_truncator(tweet)
+  if word_substituter(tweet).length > 140
+    word_substituter(tweet)[0..140] + '...'
+  else
+    tweet
+  end
 end
 
-tweets.each do |tweet|
-  puts shorten_tweet(tweet, replacements)
-  puts shorten_tweet2(tweet, replacements)
-end
+shortened_tweet_truncator(tweet_three)
