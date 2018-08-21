@@ -1,60 +1,35 @@
-tweet_one = "Hey guys, can anyone teach me how to be cool? I really want to be the best at everything, you know what I mean? Tweeting is super fun you guys!!!!"
-
-tweet_two = "OMG you guys, you won't believe how sweet my kitten is. My kitten is like super cuddly and too cute to be believed right?"
-
-tweet_three = "GUISEEEEE this is so fun! I'm tweeting for you guys and this tweet is SOOOO long it's gonna be way more than you would think twitter can handle, so shorten it up you know what I mean? I just can never tell how long to keep typing!"
-
-tweets = [tweet_one, tweet_two, tweet_three]
-
-
 def dictionary
-dictionary = {
-  "too" => "2",
-  "to" => "2",
-  "two" =>"2",
-  "four" => "4",
-  "for" => "4",
-  "be" => "b",
-  "you" => "u",
-  "at" => "@",
-  "and" => "&"
-}
+  {
+ "hello" => 'hi',
+["to, two, too"] => '2',
+["for, four"] => '4',
+'be' => 'b',
+'you' => 'u',
+"at" => "@" ,
+"and" => "&"
+    }
 end
-
-def word_substituter(string)
-  string.split.collect do |word|
-    if dictionary.keys.include?(word.downcase)
-      word = dictionary[word.downcase]
-    else
-      word
-    end
+def word_substituter(tweet)
+    tweet.split.collect do |word|
+    keys = dictionary.keys.flatten.join(",").split(",")
+    low_case = word.downcase
+        if keys.include?(low_case) && low_case == "for" || low_case == "four"
+            word = dictionary[["for, four"]]
+        elsif keys.include?(low_case) && low_case == "to" || low_case == "two" || low_case == "too"
+            word = dictionary[["to, two, too"]]
+        elsif keys.include?(low_case)
+            word = dictionary[low_case]
+        else
+            word
+        end
   end.join(" ")
 end
-word_substituter(tweet_one)
-
-def bulk_tweet_shortener(array)
-  array.each do |tweet|
-    puts word_substituter(tweet)
-  end
+ def bulk_tweet_shortener(array)
+  array.each{|each_array| puts word_substituter(each_array)}
 end
-
-bulk_tweet_shortener(tweets)
-
-def selective_tweet_shortener(tweet)
-  if tweet.length > 140
-    word_substituter(tweet)
-  else
-    tweet
-  end
+ def selective_tweet_shortener(tweet)
+  tweet.length > 140 ? word_substituter(tweet) : tweet
 end
-selective_tweet_shortener(tweet_three)
-
-def shortened_tweet_truncator(tweet)
-  if word_substituter(tweet).length == 140
-    word_substituter(tweet)[0..140] + '...'
-  else
-    tweet
-  end
+ def shortened_tweet_truncator(tweet)
+  selective_tweet_shortener(tweet).length > 140 ? tweet[0..139] : selective_tweet_shortener(tweet)
 end
-
-shortened_tweet_truncator(tweet_three)
